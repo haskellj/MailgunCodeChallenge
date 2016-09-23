@@ -1,9 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
-</head>
-<body>
-
-</body>
+    <title><!DOCTYPE html>
+<html>
+    <head>
+        <title>Mailgun Project</title>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/styles.min.css">
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        <img alt="Brand" src="img/mg-icon.png">
+                    </a>
+                </div>
+                <p class="navbar-text">Mailgun Super Awesome Code Challenge</p>
+            </div>
+        </nav>
+        <div class="container to-do-list">
+            <div class="row">
+                <div class="form-container col-sm-6 col-sm-push-6">
+                    <form>
+                        <div class="form-group">
+                            <label for="newTask">New Task</label>
+                            <input type="text" class="form-control" id="newTask" placeholder="Enter new task">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <div class="col-sm-6 col-sm-pull-6">
+                    <h1>To Do:</h1>
+                    <ul class="input-group">
+                        <li>
+                            <div class="task-display">
+                                <span class="input-group-addon"><input type="checkbox" aria-label="task-complete"></span>
+                                <span class="task-text">Use the form to add new tasks </span>
+                            </div>
+                            <div class="task-edit" style="display:none;">
+                                <input type="text" name="edit-default" value="Use the form to add new tasks" class="form-control">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
