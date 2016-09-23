@@ -14,14 +14,14 @@ $(document).ready(function(){
     $('body').on('click', 'input[type="checkbox"]', function(){
         var checked = $(this).is(':checked');
         var listItem = $(this).parents('li');
-        // completeTask(listItem, checked);
+        completeTask(listItem, checked);
     });
 
     $('body').on('click', 'i', function(){
         var listItem = $(this).parents('li');
 
         if($(this).hasClass('fa-remove')) {
-            // deleteTask(listItem);
+            deleteTask(listItem);
         }
         else if ($(this).hasClass('fa-pencil')) {
             $(this).parents('.task-display').fadeOut(400, function(){
@@ -34,9 +34,110 @@ $(document).ready(function(){
             });
         }
         else if ($(this).hasClass('fa-save')) {
-            // editTask(listItem);
+            editTask(listItem);
         }
     });
+
+
+    //============================== Task List action handlers ==================================================
+    // Initialize firebase
+    var fireDB = firebase.database();
+    var new_task_id = '';
+
+    function addTask(newTask)
+    {
+        var data = {
+            description: newTask,
+            complete: 0,
+            deleted: 0
+        };
+
+        new_task_id = fireDB.ref().child('tasks').push().key;
+        var promise = fireDB.ref('tasks/' + new_task_id).set(data);
+
+        promise.then(function(value){
+            //promise was fullfilled
+            $('input#newTask').val('');
+            $('.task-added.alert-success').fadeIn();
+            $('ul').append('<li data-task-id=' + new_task_id + '><div class="task-display"><span class="input-group-addon"><input type="checkbox" aria-label="task-complete"></span><span class="task-text">' + data.description + ' </span><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Edit task"></i><i class="fa fa-remove" data-toggle="tooltip" data-placement="right" title="Remove task"></i></div><div class="task-edit" style="display:none;"><input type="text" name="edit-' + new_task_id + '" value="' + data.description + '" class="form-control"><span class="edit-icons"><i class="fa fa-undo" data-toggle="tooltip" data-placement="top" title="Undo"></i><i class="fa fa-save" data-toggle="tooltip" data-placement="right" title="Save task"></i></span></div></li>')
+        }, function(error){
+            //promise was rejected
+            $('.task-added.alert-danger').fadeIn();
+        });
+
+        setTimeout(function(){ $('.alert').fadeOut('slow'); }, 2000);
+    }
+
+    function editTask(list_item)
+    {
+        var task_id = list_item.attr('data-task-id');
+        var new_description = list_item.find('input[name="edit-' + task_id + '"]').val();
+        var data = {description: new_description};
+        var promise = fireDB.ref('tasks/' + task_id).update(data);
+
+        promise.then(function(value){
+            //promise was fullfilled
+            list_item.find('.task-edit').fadeOut(400, function(){
+                $(this).siblings('.task-display').find('.task-text').text(new_description);
+                $(this).siblings('.task-display').fadeIn();
+            });
+            $('.task-update.alert-success').html("<strong>Woot!</strong> Task edited successfully!").fadeIn();
+        }, function(error){
+            //promise was rejected
+            $('.task-update.alert-danger').html("<strong>Woops</strong>! Unable to update task. Please try again.").fadeIn();
+        });
+
+        setTimeout(function(){ $('.alert').fadeOut('slow'); }, 2000);
+    }
+
+    // Utilizing soft-deletion
+    function deleteTask(list_item)
+    {
+        var data = {deleted: 1};
+        var task_id = list_item.attr('data-task-id');
+        var promise = fireDB.ref('tasks/' + task_id).update(data);
+
+        promise.then(function(value){
+            //promise was fullfilled
+            list_item.fadeOut('slow', function(){
+                list_item.remove();
+            });
+            $('.task-update.alert-success').html("<strong>Woot!</strong> Task deleted successfully!").fadeIn();
+        }, function(error){
+            //promise was rejected
+            $('.task-update.alert-danger').html("<strong>Woops</strong>! Unable to delete task. Please try again.").fadeIn();
+        });
+
+        setTimeout(function(){ $('.alert').fadeOut('slow'); }, 2000);
+    }
+
+    function completeTask(list_item, complete = false)
+    {
+        var task_id = list_item.attr('data-task-id');
+        var data = {
+            complete: complete ? 1 : 0
+        }
+        var promise = fireDB.ref('tasks/' + task_id).update(data);
+
+        promise.then(function(value){
+            //promise was fullfilled
+            markComplete(list_item, complete);
+        }, function(error){
+            //promise was rejected
+            $('.task-update.alert-danger').html("<strong>Woops</strong>! Unable to update task. Please try again.").fadeIn();
+            setTimeout(function(){ $('.alert').fadeOut('slow'); }, 2000);
+        });
+    }
+
+    function markComplete(list_item, complete) 
+    {
+        if (complete) {
+            list_item.addClass('complete');
+        }
+        else {
+            list_item.removeClass('complete');
+        }
+    }
 
     // Display all current tasks
     fireDB.ref('tasks').once('value').then(function(snapshot) {
@@ -59,7 +160,7 @@ $(document).ready(function(){
         newTask = newTask.replace(/<(?:.|\n)*?>/gm, '');
 
         if(newTask != '') {
-            // addTask(newTask);
+            addTask(newTask);
         }
         
     });
