@@ -37,6 +37,38 @@ li {
     margin-bottom: 6px;
 }
 
+i {
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+i.fa-remove {
+    color: red;
+}
+
+i.fa-pencil {
+    color: green;
+}
+
+i.fa-save {
+    color: blue;
+}
+
+span.edit-icons {
+    display: inline-flex;
+    position: absolute;
+    transform: translateY(74%);
+}
+
+/* overwrite bootstrap styling */
+.input-group .form-control:first-child {
+    border-radius: 4px;
+}
+
+.input-group li .form-control {
+    margin-bottom: 6px;
+}
+
 .input-group-addon:first-child {
     border: 1px solid rgb(204,204,204);
     border-radius: 4px;
