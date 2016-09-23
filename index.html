@@ -28,6 +28,10 @@
                             <input type="text" class="form-control" id="newTask" placeholder="Enter new task">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="task-added alert alert-success" role="alert" style="display: none;"><strong>Woot!</strong> Task added successfully!</div>
+                        <div class="task-added alert alert-danger" role="alert" style="display: none;"><strong>Woops</strong>! Unable to add task. Please try again.</div>
+                        <div class="task-update alert alert-success" role="alert" style="display: none;"><strong>Woot!</strong> Task edited successfully!</div>
+                        <div class="task-update alert alert-danger" role="alert" style="display: none;"><strong>Woops</strong>! Unable to edit task. Please try again.</div>
                     </form>
                 </div>
                 <div class="col-sm-6 col-sm-pull-6">
@@ -37,9 +41,15 @@
                             <div class="task-display">
                                 <span class="input-group-addon"><input type="checkbox" aria-label="task-complete"></span>
                                 <span class="task-text">Use the form to add new tasks </span>
+                                <i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Edit task"></i>
+                                <i class="fa fa-remove" data-toggle="tooltip" data-placement="right" title="Remove task"></i>
                             </div>
                             <div class="task-edit" style="display:none;">
                                 <input type="text" name="edit-default" value="Use the form to add new tasks" class="form-control">
+                                <span class="edit-icons">
+                                    <i class="fa fa-undo" data-toggle="tooltip" data-placement="top" title="Undo"></i>
+                                    <i class="fa fa-save" data-toggle="tooltip" data-placement="right" title="Save task"></i>
+                                </span>
                             </div>
                         </li>
                     </ul>
